@@ -1,3 +1,5 @@
+from .parsing import parse
+
 if __name__ == "__main__":
     while query := input("> "):
-        print(query)
+        print(parse(query).pretty())

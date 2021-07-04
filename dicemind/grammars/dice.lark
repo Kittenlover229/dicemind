@@ -1,0 +1,11 @@
+%import common.NUMBER
+%import common.WS
+%ignore WS
+
+start : expr
+
+?expr: dice
+
+dice: dice_amount "d" dice_power
+dice_power: [NUMBER]
+dice_amount: [NUMBER]
