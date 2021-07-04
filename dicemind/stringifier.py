@@ -24,7 +24,7 @@ class PlaintextStringifier(LarkInterpreter):
         return f"-{self.visit_children(tree)[0]}"
 
     def dice(self, tree) -> str:
-        return f"{tree.meta.amount if tree.meta.amount > 1 else ''}d{tree.meta.power} [ {','.join([str(x) for x in tree.meta.rolls])} ]"
+        return f"{tree.meta.amount if tree.meta.amount > 1 else ''}d{tree.meta.power} [ {', '.join([str(x) for x in tree.meta.rolls])} ]"
 
     def number(self, token) -> str:
         return token.children[0].value
