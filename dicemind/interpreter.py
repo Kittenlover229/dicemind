@@ -17,6 +17,9 @@ class Interpreter(LarkInterpreter):
         first, second, *_ = self.visit_children(tree)
         return first // second
 
+    def neg(self, tree) -> int:
+        return -self.visit_children(tree)[0]
+
     def dice(self, tree) -> int:
         return sum(tree.meta.rolls)
 
