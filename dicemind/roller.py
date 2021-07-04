@@ -1,6 +1,7 @@
 from typing import Callable, NamedTuple, List
 from lark import Visitor, Tree
 from random import randint
+from decimal import Decimal
 
 
 class Dice(NamedTuple):
@@ -9,7 +10,7 @@ class Dice(NamedTuple):
 
 
 class Roller(Visitor):
-    def __init__(self, roll: Callable[[Dice, Tree], List[int]]):
+    def __init__(self, roll: Callable[[Dice, Tree], List[Decimal]]):
         self.roll = roll
 
     def dice(self, expr):
@@ -18,7 +19,7 @@ class Roller(Visitor):
 
 
 DEFAULT_ROLLER = Roller(
-    lambda d, _: [randint(1, d.power) for _ in range(d.amount)]
+    lambda d, _: [Decimal(randint(1, d.power)) for _ in range(d.amount)]
 )
 
 
