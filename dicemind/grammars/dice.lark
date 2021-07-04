@@ -15,8 +15,10 @@ start : expr
 ?atom: NUMBER -> number 
      | "-" atom -> neg
      | "+" atom -> pos
-     | "(" expr ")"
+     | paren
      | dice
+
+paren: "(" expr ")"
 
 dice: dice_amount "d" dice_power
 dice_power: [NUMBER]

@@ -28,3 +28,7 @@ class PlaintextStringifier(LarkInterpreter):
 
     def number(self, token) -> str:
         return token.children[0].value
+
+    def paren(self, tree) -> str:
+        value, *_ = self.visit_children(tree)
+        return f"({value})"

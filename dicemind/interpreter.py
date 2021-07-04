@@ -26,3 +26,7 @@ class Interpreter(LarkInterpreter):
 
     def number(self, token) -> Decimal:
         return Decimal(token.children[0].value)
+
+    def paren(self, tree) -> Decimal:
+        value, *_ = self.visit_children(tree)
+        return value
