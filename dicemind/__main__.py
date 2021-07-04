@@ -1,8 +1,10 @@
 from .parsing import parse, optimize
 from .roller import roll
 from .interpreter import Interpreter
+from .stringifier import PlaintextStringifier
 
 interpreter = Interpreter()
+stringifier = PlaintextStringifier()
 
 if __name__ == "__main__":
     while query := input("> "):
@@ -11,5 +13,5 @@ if __name__ == "__main__":
         # For every dice in the tree
         roll(optimal)
 
-        print(optimal.pretty())
+        print(stringifier.visit(optimal)[0])
         print(interpreter.visit(optimal)[0])
