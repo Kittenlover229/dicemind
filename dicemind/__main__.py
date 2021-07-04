@@ -1,5 +1,5 @@
-from .parsing import parse
+from .parsing import parse, optimize
 
 if __name__ == "__main__":
     while query := input("> "):
-        print(parse(query).pretty())
+        print(optimize(parse(query)).pretty())

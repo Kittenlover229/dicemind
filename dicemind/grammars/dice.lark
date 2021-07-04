@@ -14,7 +14,7 @@ start : expr
 
 ?atom: NUMBER -> number 
      | "-" atom -> neg
-     | "+" atom -> atom
+     | "+" atom -> pos
      | "(" expr ")"
      | dice
 
