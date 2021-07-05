@@ -10,22 +10,26 @@ inliner = Inliner(DEFAULT_INLINE_TABLE)
 
 if __name__ == "__main__":
     while query := input("> "):
-        parsed = parse(query)
+        try:
+            parsed = parse(query)
 
-        # Inline any macros
-        inlined = inliner.transform(parsed)
+            # Inline any macros
+            inlined = inliner.transform(parsed)
 
-        print(inlined.pretty())
+            print(inlined.pretty())
 
-        # Create a new optimized tree
-        optimal = optimize(inlined)
-        # For every dice in the tree
-        roll(optimal)
+            # Create a new optimized tree
+            optimal = optimize(inlined)
+            # For every dice in the tree
+            roll(optimal)
 
-        for (string, result) in zip(
-            stringifier.visit(optimal), interpreter.evaluate(optimal)
-        ):
-            if result:
-                print(f"{string} = {result}")
-            else:
-                print(string)
+            for (string, result) in zip(
+                stringifier.visit(optimal),
+                interpreter.evaluate(optimal),
+            ):
+                if result:
+                    print(f"{string} = {result}")
+                else:
+                    print(string)
+        except BaseException as err:
+            print(err)
