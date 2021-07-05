@@ -38,4 +38,4 @@ class PlaintextStringifier(LarkInterpreter):
         return f"{varname} := {expr}"
 
     def var(self, tree) -> str:
-        return "$" + tree.children[0].value
+        return tree.children[0].value
