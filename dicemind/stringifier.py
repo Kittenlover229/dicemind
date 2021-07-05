@@ -50,3 +50,6 @@ class PlaintextStringifier(LarkInterpreter):
 
     def var(self, tree) -> str:
         return tree.children[0].value
+
+    def stringify(self, tree) -> str:
+        return self.visit(tree)
