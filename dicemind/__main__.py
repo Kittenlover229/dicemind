@@ -13,5 +13,7 @@ if __name__ == "__main__":
         # For every dice in the tree
         roll(optimal)
 
-        print(stringifier.visit(optimal)[0])
-        print(interpreter.visit(optimal)[0])
+        for (string, result) in zip(
+            stringifier.visit(optimal), interpreter.visit(optimal)
+        ):
+            print(f"{string} = {result}")

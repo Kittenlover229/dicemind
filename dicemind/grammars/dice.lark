@@ -2,7 +2,7 @@
 %import common.WS
 %ignore WS
 
-start : expr
+start : expr (";" expr)* ";"*
 
 ?expr: product 
      | expr "+" product -> add 
