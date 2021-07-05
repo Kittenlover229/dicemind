@@ -49,7 +49,8 @@ class Inliner(Transformer):
         self.inline_table = inline_table
 
     def binding(self, children):
-        # TODO: mutate inliner state
+        varname, expr = children
+        self.inline_table.put(varname.children[0].value, expr)
         raise Discard()
 
     def var(self, children):
