@@ -1,5 +1,7 @@
 from lark.visitors import Interpreter as LarkInterpreter
 from decimal import Decimal
+from typing import Optional
+from lark.tree import Tree
 
 
 class Interpreter(LarkInterpreter):
@@ -30,3 +32,10 @@ class Interpreter(LarkInterpreter):
     def paren(self, tree) -> Decimal:
         value, *_ = self.visit_children(tree)
         return value
+
+    def binding(self, *args) -> None:
+        # Bindings are not evaluated
+        return None
+
+    def evaluate(self, tree: Tree) -> Optional[Decimal]:
+        return self.visit(tree)

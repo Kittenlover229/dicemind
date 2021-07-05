@@ -1,12 +1,17 @@
 %import common.NUMBER
 %import common.WS
+%import common.WORD
 %ignore WS
 
-start : expr (";" expr)* ";"*
+start : statement (";" statement)* ";"*
+
+?statement: expr | binding
 
 expr: product 
      | expr "+" product -> add 
      | expr "-" product -> sub
+
+binding: var ":=" expr
 
 ?product: atom 
         | product "*" atom -> mul 
@@ -17,8 +22,10 @@ expr: product
      | "+" atom -> pos
      | paren
      | dice
+     | var
 
 paren: "(" expr ")"
+var: "$" WORD
 
 dice: dice_amount "d" dice_power
 dice_power: [NUMBER]

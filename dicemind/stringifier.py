@@ -32,3 +32,10 @@ class PlaintextStringifier(LarkInterpreter):
     def paren(self, tree) -> str:
         value, *_ = self.visit_children(tree)
         return f"({value})"
+
+    def binding(self, tree) -> str:
+        varname, expr = self.visit_children(tree)
+        return f"{varname} := {expr}"
+
+    def var(self, tree) -> str:
+        return "$" + tree.children[0].value

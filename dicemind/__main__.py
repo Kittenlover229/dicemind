@@ -8,12 +8,18 @@ stringifier = PlaintextStringifier()
 
 if __name__ == "__main__":
     while query := input("> "):
+        parsed = parse(query)
+        print(parsed.pretty())
+
         # Create a new optimized tree
-        optimal = optimize(parse(query))
+        optimal = optimize(parsed)
         # For every dice in the tree
         roll(optimal)
 
         for (string, result) in zip(
-            stringifier.visit(optimal), interpreter.visit(optimal)
+            stringifier.visit(optimal), interpreter.evaluate(optimal)
         ):
-            print(f"{string} = {result}")
+            if result:
+                print(f"{string} = {result}")
+            else:
+                print(string)
