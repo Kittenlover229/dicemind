@@ -47,7 +47,15 @@ class DiceFieldInjector(Transformer):
 
 DICE_FIELD_INJECTOR = DiceFieldInjector()
 
-OPTIMIZER = UNARY_OPTIMIZER * DICE_FIELD_INJECTOR
+
+class ExpressionOpener(Transformer):
+    def expr(self, children):
+        return children[0]
+
+
+EXPRESSION_OPENER = ExpressionOpener()
+
+OPTIMIZER = EXPRESSION_OPENER * UNARY_OPTIMIZER * DICE_FIELD_INJECTOR
 
 
 def parse(string: str) -> Tree:

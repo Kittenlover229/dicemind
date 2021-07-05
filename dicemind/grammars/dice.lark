@@ -4,7 +4,7 @@
 
 start : expr (";" expr)* ";"*
 
-?expr: product 
+expr: product 
      | expr "+" product -> add 
      | expr "-" product -> sub
 
