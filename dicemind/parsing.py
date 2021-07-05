@@ -1,4 +1,4 @@
-from lark import Tree, Lark, Transformer
+from lark import Tree, Lark, Transformer, Token
 from lark.tree import Meta
 from os import path
 
@@ -48,6 +48,20 @@ class DiceFieldInjector(Transformer):
 DICE_FIELD_INJECTOR = DiceFieldInjector()
 
 
+class DullDiceCleaner(Transformer):
+    # I hate that I have to do this, but lark doesn't pass metadata to ordinary functions
+    def __default__(self, data, children, meta):
+        if data == "dice":
+            if meta.amount == 0 or meta.power == 0:
+                return Tree("number", [Token("NUMBER", "0")])
+            if meta.power == 1:
+                return Tree("number", [Token("NUMBER", "1")])
+        return Transformer.__default__(self, data, children, meta)
+
+
+DULL_DICE_CLEANER = DullDiceCleaner()
+
+
 class ExpressionOpener(Transformer):
     def expr(self, children):
         return children[0]
@@ -55,7 +69,12 @@ class ExpressionOpener(Transformer):
 
 EXPRESSION_OPENER = ExpressionOpener()
 
-OPTIMIZER = EXPRESSION_OPENER * UNARY_OPTIMIZER * DICE_FIELD_INJECTOR
+OPTIMIZER = (
+    EXPRESSION_OPENER
+    * UNARY_OPTIMIZER
+    * DICE_FIELD_INJECTOR
+    * DULL_DICE_CLEANER
+)
 
 
 def parse(string: str) -> Tree:
