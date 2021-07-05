@@ -66,6 +66,14 @@ class ExpressionOpener(Transformer):
     def expr(self, children):
         return children[0]
 
+    @v_args(tree=True)
+    def paren(self, tree):
+        expr = tree.children[0]
+        if expr.data == "number" or expr.data == "dice":
+            return expr
+        else:
+            return tree
+
 
 EXPRESSION_OPENER = ExpressionOpener()
 
