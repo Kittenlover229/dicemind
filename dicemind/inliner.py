@@ -3,6 +3,14 @@ from abc import ABC, abstractmethod
 from typing import Optional, Dict
 
 
+class InlineError(BaseException):
+    def __init__(self, macro: str):
+        self.macro = macro
+
+    def __str__(self) -> str:
+        return f"Couldn't inline macro `{self.macro}`"
+
+
 class AbstractInlineTable(ABC):
     @abstractmethod
     def get(self, name: str) -> Optional[Tree]:
@@ -21,7 +29,10 @@ class DictInlineTable(AbstractInlineTable):
         self, name: str, meta: Optional[object] = None
     ) -> Optional[Tree]:
         del meta
-        return self.table.get(name)
+        if tree := self.table.get(name):
+            return tree
+        else:
+            raise InlineError(name)
 
     def put(self, name: str, tree: Tree, meta: Optional[object] = None):
         del meta
