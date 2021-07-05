@@ -24,7 +24,7 @@ binding: var ":=" expr
      | var
 
 paren: "(" expr ")"
-var: /^(?!d\s)[a-zA-Z\-\_]+/
+var: /(?!d\s)[a-zA-Z\-\_]+/
 
 dice: dice_amount "d" dice_power
 dice_power: [NUMBER]
