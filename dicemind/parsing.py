@@ -1,5 +1,6 @@
 from lark import Tree, Lark, Transformer, Token
 from lark.tree import Meta
+from lark.visitors import v_args
 from os import path
 
 parser = Lark(
@@ -49,14 +50,13 @@ DICE_FIELD_INJECTOR = DiceFieldInjector()
 
 
 class DullDiceCleaner(Transformer):
-    # I hate that I have to do this, but lark doesn't pass metadata to ordinary functions
-    def __default__(self, data, children, meta):
-        if data == "dice":
-            if meta.amount == 0 or meta.power == 0:
-                return Tree("number", [Token("NUMBER", "0")])
-            if meta.power == 1:
-                return Tree("number", [Token("NUMBER", "1")])
-        return Transformer.__default__(self, data, children, meta)
+    @v_args(meta=True)
+    def dice(self, children, meta):
+        if meta.amount == 0 or meta.power == 0:
+            return Tree("number", [Token("NUMBER", "0")])
+        if meta.power == 1:
+            return Tree("number", [Token("NUMBER", "1")])
+        return Tree("dice", children, meta)
 
 
 DULL_DICE_CLEANER = DullDiceCleaner()
