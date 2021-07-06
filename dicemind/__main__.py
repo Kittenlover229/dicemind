@@ -31,7 +31,7 @@ def main(*args, **kwargs):
                 strings,
                 values,
             ):
-                if result:
+                if result is not None:
                     print(f"{string} = {result}")
                 else:
                     # There was a binding, no need for equal sign
