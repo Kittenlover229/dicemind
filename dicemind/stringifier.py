@@ -1,6 +1,6 @@
 from decimal import Decimal
 from lark.visitors import Interpreter as LarkInterpreter
-from lark import Tree
+from .roller import RolledValueFlag, Roller
 
 
 class PlaintextStringifier(LarkInterpreter):
@@ -25,7 +25,17 @@ class PlaintextStringifier(LarkInterpreter):
 
     def dice(self, tree) -> str:
         dice = f"{tree.meta.amount if tree.meta.amount > 1 else ''}d{tree.meta.power}"
-        rolls = f"{', '.join([str(x.value) for x in tree.meta.rolls])}"
+        rolls = ", ".join(
+            [
+                f"{x.value}!"
+                if (
+                    x.flags & RolledValueFlag.CRIT
+                    or x.flags & RolledValueFlag.FAIL
+                )
+                else str(x.value)
+                for x in tree.meta.rolls
+            ]
+        )
         return f"{dice} [ {rolls} ]"
 
     def number(self, token) -> str:
