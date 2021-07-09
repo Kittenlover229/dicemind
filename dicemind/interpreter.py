@@ -24,7 +24,7 @@ class Interpreter(LarkInterpreter):
         return -self.visit_children(tree)[0]
 
     def dice(self, tree) -> Decimal:
-        return sum(tree.meta.rolls)
+        return sum(x.value for x in tree.meta.rolls)
 
     def number(self, token) -> Decimal:
         return Decimal(token.children[0].value)

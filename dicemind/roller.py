@@ -9,13 +9,18 @@ class Dice(NamedTuple):
     power: int
 
 
+class RolledValue:
+    def __init__(self, value: Decimal):
+        self.value = value
+
+
 class Roller(Visitor):
     def __init__(self, roll: Callable[[Dice, Tree], List[Decimal]]):
         self.roll = roll
 
     def dice(self, expr):
         die = Dice(expr.meta.amount, expr.meta.power)
-        expr.meta.rolls = self.roll(die, expr)
+        expr.meta.rolls = [RolledValue(x) for x in self.roll(die, expr)]
 
 
 DEFAULT_ROLLER = Roller(
