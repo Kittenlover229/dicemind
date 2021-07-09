@@ -1,5 +1,5 @@
 from .parsing import parse, optimize
-from .roller import roll
+from .roller import DEFAULT_ROLLER
 from .interpreter import Interpreter
 from .stringifier import PlaintextStringifier
 from .inliner import InlineError, Inliner, DEFAULT_INLINE_TABLE
@@ -22,7 +22,7 @@ def main(*args, **kwargs):
             # Create a new optimized tree
             optimal = optimize(inlined)
             # Roll the dice!
-            roll(optimal)
+            DEFAULT_ROLLER.roll(optimal)
 
             strings = stringifier.stringify(optimal)
             values = interpreter.evaluate(optimal)
