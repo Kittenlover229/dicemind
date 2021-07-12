@@ -57,3 +57,18 @@ class PlaintextStringifier(LarkInterpreter):
 
     def stringify(self, tree) -> str:
         return self.visit(tree)
+
+
+class MarkdownStringifier(PlaintextStringifier):
+    def rolls(self, tree) -> str:
+        return ", ".join(
+            [
+                f"**{x.value}**"
+                if (
+                    x.flags & RolledValueFlag.CRIT
+                    or x.flags & RolledValueFlag.FAIL
+                )
+                else str(x.value)
+                for x in tree.meta.rolls
+            ]
+        )
