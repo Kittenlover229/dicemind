@@ -25,7 +25,11 @@ class PlaintextStringifier(LarkInterpreter):
 
     def dice(self, tree) -> str:
         dice = f"{tree.meta.amount if tree.meta.amount > 1 else ''}d{tree.meta.power}"
-        rolls = ", ".join(
+        rolls = self.rolls(tree)
+        return f"{dice} [ {rolls} ]"
+
+    def rolls(self, tree) -> str:
+        return ", ".join(
             [
                 f"{x.value}!"
                 if (
@@ -36,7 +40,6 @@ class PlaintextStringifier(LarkInterpreter):
                 for x in tree.meta.rolls
             ]
         )
-        return f"{dice} [ {rolls} ]"
 
     def number(self, token) -> str:
         return token.children[0].value
