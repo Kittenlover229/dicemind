@@ -4,6 +4,7 @@ from .interpreter import Interpreter
 from .stringifier import PlaintextStringifier
 from .inliner import InlineError, Inliner, DEFAULT_INLINE_TABLE
 from lark import UnexpectedCharacters
+from .defaults import roll_func
 
 interpreter = Interpreter()
 stringifier = PlaintextStringifier()
@@ -13,24 +14,12 @@ inliner = Inliner(DEFAULT_INLINE_TABLE)
 def main(*args, **kwargs):
     del args
     del kwargs
+
+    roll = roll_func()
+
     while query := input("> "):
         try:
-            parsed = parse(query)
-
-            # Inline any macros
-            inlined = inliner.transform(parsed)
-            # Create a new optimized tree
-            optimal = optimize(inlined)
-            # Roll the dice!
-            DEFAULT_ROLLER.roll(optimal)
-
-            strings = stringifier.stringify(optimal)
-            values = interpreter.evaluate(optimal)
-
-            for (string, result) in zip(
-                strings,
-                values,
-            ):
+            for (string, result) in roll(query):
                 if result is not None:
                     print(f"{string} = {result}")
                 else:
